@@ -139,9 +139,9 @@ def main(save_dir):
     with open(download_path, 'w') as f: 
         pass
     image_infos = parse_txt('pubfig/dev_urls.txt')
-    download_all(image_infos, os.path.join(save_dir, 'dev'))
+    download_all(image_infos, os.path.join(save_dir, 'dev'), download_path)
     image_infos = parse_txt('pubfig/eval_urls.txt')
-    download_all(image_infos,  os.path.join(save_dir, 'eval'))
+    download_all(image_infos,  os.path.join(save_dir, 'eval'), download_path)
 
 
 if __name__ == '__main__':
