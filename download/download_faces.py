@@ -87,12 +87,8 @@ class DownloadThread (threading.Thread):
         self.cost = time.time() - start
 
 
-def download_all(img_infos, img_dir):
+def download_all(img_infos, img_dir, download_path):
     if not os.path.exists(img_dir): os.makedirs(img_dir)
-
-    download_path = 'download_info.log'
-    with open(download_path, 'w') as f: 
-        pass
 
     count = 0
     thread_count = 1000
@@ -137,11 +133,16 @@ def download_all(img_infos, img_dir):
         print('%05d/%d download cost: mean=%.3fs, max=%.3fs, min=%.3fs,' %(count, max_count,
                 np.mean(costs), np.max(costs), np.min(costs)))
 
+
 def main(save_dir):
+    download_path = 'download_info.log'
+    with open(download_path, 'w') as f: 
+        pass
     image_infos = parse_txt('pubfig/dev_urls.txt')
     download_all(image_infos, os.path.join(save_dir, 'dev'))
     image_infos = parse_txt('pubfig/eval_urls.txt')
     download_all(image_infos,  os.path.join(save_dir, 'eval'))
+
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
