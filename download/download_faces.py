@@ -41,7 +41,7 @@ def crop_image(img, rect, kPadRatio):
 
 def download(url, file_path, md5, rect):
     try:
-        file_data = requests.get(url, allow_redirects=True, timeout=5).content
+        file_data = requests.get(url, allow_redirects=True, timeout=3).content
         # actual_md5 = hashlib.md5(file_data).hexdigest()
         # if actual_md5 != md5:
         #     return 'bad md5'
@@ -97,7 +97,7 @@ def download_all(img_infos, img_dir, download_path):
         # create threads                
         threads = []
         for i in range(count, min(count + thread_count, max_count)):
-            img_info = img_infos[count + i]
+            img_info = img_infos[i]
             img_id = '%05d' % (img_info['id'])
             urls = [img_info['url']]
             imgs = [f"{img_dir}/{img_info['name']}-{img_id}.jpg"]
@@ -123,7 +123,7 @@ def download_all(img_infos, img_dir, download_path):
         for each in threads:                        
             costs.append(each.cost)
 
-        with open(download_path, 'w') as f: 
+        with open(download_path, 'a') as f: 
             for i, each in enumerate(threads):
                 img_info = img_infos[count + i]
                 log = "%s-%05d:%s" % (img_info['name'], img_info['id'], each.result[0])
