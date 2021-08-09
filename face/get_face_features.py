@@ -82,7 +82,7 @@ def get_face_features_dir(img_dir):
 
     names = os.listdir(img_dir)
     names.sort()
-    names = names[:32]
+    # names = names[:32]
     threads = []
     img_count = 0
     for name in tqdm(names):
