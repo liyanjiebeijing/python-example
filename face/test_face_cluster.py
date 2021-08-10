@@ -1,4 +1,5 @@
-from face_cluster import Cluster
+# from face_cluster import Cluster
+from face_cluster import FastCluster as Cluster
 import os
 from loguru import logger 
 from tqdm import tqdm
@@ -14,7 +15,7 @@ def test_face_cluster(kThresh):
     feature_dir = '/dev/shm/pubfig/all_feature' 
     infos = []
     name_label = {}
-    for each in tqdm(os.listdir(feature_dir)[:10000]):        
+    for each in tqdm(os.listdir(feature_dir)[:1000]):        
         if kFeaKey not in each:
             continue
 
@@ -33,7 +34,8 @@ def test_face_cluster(kThresh):
     labels_pred = []
     for each in tqdm(infos):
         labels_true.append(each['label'])
-        pred = face_cluster.add_feature(each['fea'])
+        pred, max_sim = face_cluster.add_feature(each['fea'])
+        # print(each['label'], pred, max_sim)
         labels_pred.append(pred)
     logger.info("done") 
 
@@ -61,8 +63,8 @@ def test_face_cluster(kThresh):
 
 
 if __name__ == '__main__':
-    test_face_cluster(0.5)
-    test_face_cluster(0.6)
+    # test_face_cluster(0.5)
+    # test_face_cluster(0.6)
     test_face_cluster(0.7)
     
 
