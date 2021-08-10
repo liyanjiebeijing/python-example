@@ -144,3 +144,5 @@ cython_debug/
 *.mpeg
 *.txt
 *.tar
+*.tar.gz
+*.zip
