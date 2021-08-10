@@ -7,18 +7,14 @@ import numpy as np
 from sklearn import metrics
 import random
 
-
-def test_face_cluster(kThresh, feature_key):    
-    # dst_dir = 'cluster_%.2f' % (kThresh)
-    # if not os.path.exists(dst_dir): os.makedirs(dst_dir)
-
+def load_features(feature_key):
     logger.info("load features...") 
     kFeaKey = feature_key
     feature_dir = '/dev/shm/pubfig/all_feature' 
     infos = []
     name_label = {}    
     for each in tqdm(os.listdir(feature_dir)):
-    # for each in tqdm(os.listdir(feature_dir)[:1000]):
+    # for each in tqdm(os.listdir(feature_dir)[:10000]):
         if kFeaKey not in each:
             continue
 
@@ -27,15 +23,18 @@ def test_face_cluster(kThresh, feature_key):
 
         fea_path = os.path.join(feature_dir, each)
         fea = np.load(fea_path)
-        infos.append({'fea': fea, 'name': each, 'label': name_label[name]})
-    logger.info("done") 
+        infos.append({'fea': fea, 'name': each, 'label': name_label[name]})    
 
     #shuffle
     kSeed = 7
     random.seed(kSeed)
     random.shuffle(infos)
+    logger.info("done") 
 
-    #test cluster
+    return name_label, infos
+
+
+def test_face_cluster(name_label, infos, kThresh, feature_key):
     logger.info("do cluster ...") 
     face_cluster = Cluster(sim_thresh = kThresh)
     labels_true = []
@@ -73,15 +72,16 @@ def test_face_cluster(kThresh, feature_key):
     return (len(name_label),  homogeneity_score, completeness_score, v_measure_score, rand_score)
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':    
     cluster_result_dir = 'cluster_result'
     if not os.path.exists(cluster_result_dir): os.makedirs(cluster_result_dir)
     with open('cluster_result/cluster_compare.txt', 'w') as f:
         f.write("feature_key\tthresh\tperson_count\thomogeneity_score\tcompleteness_score\tv_measure_score\trand_score\n")
         for feature_key in ['fea20210326', 'fea1906']:        
+            name_label, infos = load_features(feature_key)
             for thresh in [0.5, 0.55, 0.65, 0.7, 0.75, 0.8]:        
                 person_count, homogeneity_score, completeness_score, v_measure_score, rand_score = \
-                    test_face_cluster(thresh, feature_key)
+                    test_face_cluster(name_label, infos, thresh, feature_key)
                 f.write(f"{feature_key}\t{thresh}\t{person_count}\t{homogeneity_score}\t{completeness_score}\t{v_measure_score}\t{rand_score}\n")
     
 
