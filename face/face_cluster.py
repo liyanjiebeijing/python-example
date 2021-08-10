@@ -102,7 +102,7 @@ class FastCluster():
         if self.fea_count >= self.fea_capacity - 1:
             self.fea_capacity *= 2
             feature_np = np.zeros((self.fea_capacity, self.kDim + 1), np.float32)
-            feature_np[:self.fea_count] = self.feature_np
+            feature_np[:self.fea_count] = self.feature_np[:self.fea_count]
             self.feature_np = feature_np
 
         return (ret, max_sim)
