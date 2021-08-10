@@ -72,7 +72,10 @@ class PostThread (threading.Thread):
         self.result = {}
 
     def run(self):
-        self.result = detect_face(self.img_b64)
+        try:
+            self.result = detect_face(self.img_b64)
+        except Exception as e:
+            print(e)
 
 
 def get_face_features_dir(img_dir):
@@ -107,7 +110,8 @@ def get_face_features_dir(img_dir):
 
             #save features
             for thread in threads:
-                if len(thread.result['faces']) > 0 and thread.result['faces'][0]['valid']:
+                if 'faces' in thread.result and len(thread.result['faces']) > 0 and \
+                        thread.result['faces'][0]['valid']:
                     face = thread.result['faces'][0]
                     np.save(os.path.join(feature_dir, thread.img_name + '.fea1906.npy'), face['fea_1906'])
                     np.save(os.path.join(feature_dir, thread.img_name + '.fea20210326.npy'), face['fea_20210326'])
