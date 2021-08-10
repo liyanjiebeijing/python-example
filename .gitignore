@@ -141,8 +141,10 @@ cython_debug/
 #self define
 *.mp4
 *.jpg
+*.png
 *.mpeg
 *.txt
 *.tar
 *.tar.gz
 *.zip
+*.npy
