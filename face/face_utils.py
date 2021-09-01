@@ -51,3 +51,28 @@ def visilize_similarity(features, save_dir):
             output_dir = save_dir
             if not os.path.exists(output_dir): os.makedirs(output_dir)
             cv2.imwrite(os.path.join(output_dir, '%03d_%03d.jpg' % (i,j)), img_similarity)
+
+
+
+def align_face(src_img, face_5p, dst_size = 112):
+    align_5p = np.array([
+      [30.2946, 51.6963],
+      [65.5318, 51.5014],
+      [48.0252, 71.7366],
+      [33.5493, 92.3655],
+      [62.7299, 92.2041] ], dtype=np.float32)
+    align_5p[:,0] += 8.0
+    assert(face_5p.shape == align_5p.shape)
+    face_5p = face_5p.astype(np.float32)
+
+    kOriginSize = 112
+    scale = 1.0 * dst_size / kOriginSize
+    align_5p = align_5p * scale
+
+    tform = transform.SimilarityTransform()
+    tform.estimate(face_5p, align_5p)
+    M = tform.params[0:2,:]
+
+    face_aligned  = cv2.warpAffine(src_img, M, (dst_size, dst_size), borderValue = 0.0)
+
+    return face_aligned
