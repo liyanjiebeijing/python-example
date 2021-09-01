@@ -1,0 +1,11 @@
+1. get_face_features.py
+提取某个文件夹中所有人脸图片的特征并保存，例如人脸文件夹为face，则特征文件夹为face_feature
+
+2、test_face_cluster_cp_images.py
+对某个文件夹中的所有人脸进行聚类，聚类的依据是上一步得到的人脸特征，结果保存在cluster_fea1906和cluster_fea20210326文件夹中，其中fea1906和fea20210326是人脸特征的名称
+
+3、test_face_cluster.py
+寻找聚类最优阈值，它从人脸特征目录读取人脸特征，然后按照阈值0.6~0.9，间隔0.01进行聚类。它按照人脸特征文件的名字区分不同的人，人名和其它信息之间以-分割，例如"Gael Garcia Bernal-00036.jpg.fea1906.npy"这个特征文件对应的人名是Gael Garcia Bernal-00036.jpg。
+
+4、test_face_similarity.py
+比较一个文件夹内的人脸两两之间的相似度。
