@@ -1,6 +1,7 @@
 import os
 import cv2
 import numpy as np
+from skimage import transform
 
 def to_numpy(v):
     if isinstance(v, list): return np.array(v)
