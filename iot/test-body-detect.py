@@ -20,9 +20,6 @@ import datetime
 import threading
 import numpy as np
 
-g_use_url = False
-img_ip_port = 'dlgpu1.ai.bjmd.qihoo.net:8002'
-
 
 def detect(img_base64):
     # IP_port = "10.202.209.15:80" #indoor online
